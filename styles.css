@@ -161,6 +161,22 @@ button:hover {
     filter: brightness(1.1);
 }
 
+.materials-link {
+    background: transparent;
+    color: var(--text);
+    border: 1px solid var(--border);
+    padding: .5rem .75rem;
+    border-radius: .5rem;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    font-size: 0.9rem;
+}
+
+.materials-link:hover {
+    border-color: var(--accent-2);
+}
+
 .tf-controls {
     display: flex;
     gap: .75rem;
