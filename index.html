@@ -1,0 +1,114 @@
+<!doctype html>
+<html lang="cs">
+
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Únikovka & Matematický souboj</title>
+    <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+    <header>
+        <h1>Únikovka & Matematický souboj</h1>
+        <nav>
+            <button class="tab-btn" data-tab="escape">Únikovka</button>
+            <button class="tab-btn" data-tab="duel">Souboj</button>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Escape Game -->
+        <section id="escape" class="tab active" aria-labelledby="escape-heading">
+            <h2 id="escape-heading">Únikovka: odpověz a získej nápovědu</h2>
+            <div id="escape-status" class="status"></div>
+            <div id="escape-card" class="card">
+                <div class="q-index">
+                    Otázka <span id="q-number">1</span> / <span id="q-total">10</span>
+                </div>
+                <div id="question-text" class="question"></div>
+                <form id="answer-form">
+                    <label for="answer-input" class="sr-only">Tvoje odpověď</label>
+                    <input id="answer-input" type="text" autocomplete="off" placeholder="Sem napiš odpověď" />
+                    <button type="submit">Odpovědět</button>
+                </form>
+                <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
+                <div class="actions">
+                    <button id="skip-btn" class="secondary" title="Přeskočit na další otázku">Další otázka</button>
+                    <button id="reset-escape" class="link">Začít znovu</button>
+                </div>
+            </div>
+
+            <div class="hints">
+                <h3>Nápovědy</h3>
+                <ol id="hints-list"></ol>
+                <div id="final-guess" class="final-guess card">
+                    <h4>Tipni si finální odpověď</h4>
+                    <form id="final-form">
+                        <label for="final-input" class="sr-only">Finální odpověď</label>
+                        <input id="final-input" type="text" placeholder="Kdo/Co jsem?" />
+                        <button type="submit">Odeslat</button>
+                    </form>
+                    <div id="final-feedback" class="feedback" role="status" aria-live="polite"></div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Duel -->
+        <section id="duel" class="tab" aria-labelledby="duel-heading">
+            <h2 id="duel-heading">Matematický souboj (2 hráči)</h2>
+            <div class="controls">
+                <label>
+                    Operace:
+                    <select id="op-select">
+                        <option value="mix">Sčítání × Násobení (mix)</option>
+                        <option value="add">Jen sčítání</option>
+                        <option value="mul">Jen násobení</option>
+                    </select>
+                </label>
+                <label>
+                    Obtížnost:
+                    <select id="digits-select">
+                        <option value="2">2-ciferná čísla</option>
+                        <option value="3">3-ciferná čísla</option>
+                        <option value="23">Mix 2–3 cifry</option>
+                    </select>
+                </label>
+                <button id="next-problem">Nový příklad</button>
+                <button id="reset-duel" class="secondary">Vynulovat skóre</button>
+            </div>
+
+            <div id="problem" class="problem" aria-live="polite"></div>
+
+            <div class="players">
+                <div class="player" data-player="A">
+                    <h3>Hráč A</h3>
+                    <div class="score" id="score-A">0</div>
+                    <form class="answer-form" data-player="A">
+                        <label for="ans-A" class="sr-only">Odpověď hráče A</label>
+                        <input id="ans-A" type="text" inputmode="numeric" autocomplete="off" placeholder="Odpověď A" />
+                        <button type="submit">Odeslat</button>
+                    </form>
+                </div>
+                <div class="player" data-player="B">
+                    <h3>Hráč B</h3>
+                    <div class="score" id="score-B">0</div>
+                    <form class="answer-form" data-player="B">
+                        <label for="ans-B" class="sr-only">Odpověď hráče B</label>
+                        <input id="ans-B" type="text" inputmode="numeric" autocomplete="off" placeholder="Odpověď B" />
+                        <button type="submit">Odeslat</button>
+                    </form>
+                </div>
+            </div>
+            <div id="duel-feedback" class="feedback" role="status" aria-live="polite"></div>
+        </section>
+    </main>
+
+    <footer>
+        <small>© 2025 ZS – demo aplikace pro výročí</small>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+
+</html>
