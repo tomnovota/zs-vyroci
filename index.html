@@ -4,13 +4,13 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Únikovka & Matematický souboj</title>
+    <title>Výročí 50 let ZŠ Hovorčovická</title>
     <link rel="stylesheet" href="styles.css" />
 </head>
 
 <body>
     <header>
-        <h1>Únikovka & Matematický souboj</h1>
+        <h1>Výročí 50 let ZŠ Hovorčovická - Informatika a Matematika</h1>
         <nav>
             <button class="tab-btn" data-tab="escape">Únikovka</button>
             <button class="tab-btn" data-tab="duel">Souboj</button>
@@ -20,13 +20,50 @@
     <main>
         <!-- Escape Game -->
         <section id="escape" class="tab active" aria-labelledby="escape-heading">
-            <h2 id="escape-heading">Únikovka: odpověz a získej nápovědu</h2>
+            <h2 id="escape-heading">Únikovka: odpověz, získej nápovědu a uhodni hádanku</h2>
+            <!-- Únikovka – instrukce (zobrazeno pouze na této záložce) -->
+            <section id="escape-instructions" class="card instructions" aria-labelledby="escape-instructions-heading">
+                <h2 id="escape-instructions-heading">Instrukce</h2>
+                <ul>
+                    <li>Cíl: postupně získej všechny nápovědy a potom uhodni finální odpověď.</li>
+                    <li>Typy odpovědí:
+                        <ul>
+                            <li>Otevřená odpověď (text): Odeslání klávesou Enter.</li>
+                            <li>Porovnání (Menší / Rovno / Větší): Klávesové zkratky: 1 (Menší), 2 (Rovno), 3 (Větší).
+                            </li>
+                            <li>Pravda / Nepravda: Klávesové zkratky: P (Pravda), N (Nepravda).</li>
+                        </ul>
+                    </li>
+                    <li>Za každou správnou odpověď se odhalí jedna nápověda. Jakmile máš všechny nápovědy, otázky se
+                        skryjí
+                        a můžeš odeslat finální tip.</li>
+                    <li>Ovládání: P/N (Pravda/Nepravda), 1/2/3 (Menší/Rovno/Větší), Enter (odeslat text), N (další
+                        otázka –
+                        pouze pokud nepíšeš do pole).</li>
+                    <li>Tlačítko „Začít znovu“ resetuje průběh.</li>
+                </ul>
+            </section>
             <div id="escape-status" class="status"></div>
             <div id="escape-card" class="card">
                 <div class="q-index">
                     Otázka <span id="q-number">1</span> / <span id="q-total">10</span>
                 </div>
                 <div id="question-text" class="question"></div>
+                <!-- Text answer -->
+                <form id="text-form" class="answer-text" autocomplete="off">
+                    <label for="text-input" class="sr-only">Tvoje odpověď</label>
+                    <input id="text-input" type="text" placeholder="Sem napiš odpověď" />
+                    <button type="submit">Odeslat</button>
+                </form>
+
+                <!-- Compare: menší / rovno / větší -->
+                <div id="compare-controls" class="compare-controls">
+                    <button class="cmp" data-cmp="lt">Menší</button>
+                    <button class="cmp" data-cmp="eq">Rovno</button>
+                    <button class="cmp" data-cmp="gt">Větší</button>
+                </div>
+
+                <!-- True / False -->
                 <div id="tf-controls" class="tf-controls">
                     <button id="btn-true" class="tf true">Pravda</button>
                     <button id="btn-false" class="tf false">Nepravda</button>
@@ -36,6 +73,12 @@
                     <button id="skip-btn" class="secondary" title="Přeskočit na další otázku">Další otázka</button>
                     <button id="reset-escape" class="link">Začít znovu</button>
                 </div>
+            </div>
+
+            <!-- Finished questions notice -->
+            <div id="finished-card" class="card" style="display:none">
+                <h3>Máte všechny nápovědy!</h3>
+                <p>Zkuste nyní uhodnout finální odpověď níže.</p>
             </div>
 
             <div class="hints">
@@ -50,12 +93,31 @@
                     </form>
                     <div id="final-feedback" class="feedback" role="status" aria-live="polite"></div>
                 </div>
+                <div id="congrats" class="card" style="display:none">
+                    <h3>Gratulujeme!</h3>
+                    <p>Správná odpověď: Vídeňský řízek.</p>
+                    <button id="restart-all">Začít znovu</button>
+                </div>
             </div>
         </section>
 
         <!-- Duel -->
         <section id="duel" class="tab" aria-labelledby="duel-heading">
             <h2 id="duel-heading">Matematický souboj (2 hráči)</h2>
+            <!-- Matematický souboj – instrukce (zobrazeno pouze na této záložce) -->
+            <section id="duel-instructions" class="card instructions" aria-labelledby="duel-instructions-heading">
+                <h2 id="duel-instructions-heading">Instrukce</h2>
+                <ul>
+                    <li>Dva hráči soutěží v rychlosti: kdo odpoví správně jako první, získá bod a automaticky se
+                        vygeneruje
+                        další příklad.</li>
+                    <li>Nastavení: zvol operaci (sčítání, násobení nebo mix) a obtížnost (2 nebo 3 cifry, případně mix).
+                    </li>
+                    <li>Ovládání: každý hráč píše do svého pole a odesílá Enterem nebo tlačítkem „Odeslat“. K dispozici
+                        jsou
+                        i tlačítka „Nový příklad“ a „Vynulovat skóre“.</li>
+                </ul>
+            </section>
             <div class="controls">
                 <label>
                     Operace:

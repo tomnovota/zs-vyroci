@@ -105,6 +105,29 @@ form {
     gap: .5rem;
 }
 
+/* Escape game controls */
+.answer-text {
+    margin: .25rem 0;
+}
+
+.answer-text input {
+    flex: 1;
+}
+
+.compare-controls {
+    display: flex;
+    gap: .5rem;
+    margin: .25rem 0;
+}
+
+.cmp {
+    background: #475569;
+}
+
+.cmp[data-active="true"] {
+    outline: 2px solid var(--accent-2);
+}
+
 input[type="text"],
 select {
     flex: 1;
@@ -184,7 +207,13 @@ button:hover {
 }
 
 .hints li.hidden {
-    color: var(--border);
+    color: transparent;
+    /* hide text */
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.04);
+}
+
+.hints li.hidden::marker {
+    color: var(--muted);
 }
 
 .players {
