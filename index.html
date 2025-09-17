@@ -27,11 +27,10 @@
                     Otázka <span id="q-number">1</span> / <span id="q-total">10</span>
                 </div>
                 <div id="question-text" class="question"></div>
-                <form id="answer-form">
-                    <label for="answer-input" class="sr-only">Tvoje odpověď</label>
-                    <input id="answer-input" type="text" autocomplete="off" placeholder="Sem napiš odpověď" />
-                    <button type="submit">Odpovědět</button>
-                </form>
+                <div id="tf-controls" class="tf-controls">
+                    <button id="btn-true" class="tf true">Pravda</button>
+                    <button id="btn-false" class="tf false">Nepravda</button>
+                </div>
                 <div id="feedback" class="feedback" role="status" aria-live="polite"></div>
                 <div class="actions">
                     <button id="skip-btn" class="secondary" title="Přeskočit na další otázku">Další otázka</button>
@@ -105,7 +104,7 @@
     </main>
 
     <footer>
-        <small>© 2025 ZS – demo aplikace pro výročí</small>
+        <small>© 2025 ZŠ Hovorčovická – Výročí 50 let</small>
     </footer>
 
     <script src="script.js"></script>

@@ -138,6 +138,24 @@ button:hover {
     filter: brightness(1.1);
 }
 
+.tf-controls {
+    display: flex;
+    gap: .75rem;
+    margin: .25rem 0 .25rem;
+}
+
+.tf {
+    font-weight: 600;
+}
+
+.tf.true {
+    background: #16a34a;
+}
+
+.tf.false {
+    background: #dc2626;
+}
+
 .actions {
     display: flex;
     gap: .5rem;

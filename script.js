@@ -8,73 +8,20 @@ document.querySelectorAll('.tab-btn').forEach((btn) => {
 });
 
 // ---------- Escape game ----------
-const escapeQuestions = [
-    {
-        q: 'Kolik je jedna čtvrtina z jedné čtvrtiny?',
-        validate: (v) => ['1/16', '1/ 16', '1 : 16', '1:16', '0.0625', '0,0625', '1/16.'].includes(norm(v)) || norm(v) === '0,0625' || norm(v) === '0.0625' || norm(v) === '1/16' || norm(v) === '1/16.',
-    },
-    {
-        q: 'Je víc jedna polovina z jedné třetiny nebo jedna třetina z jedné poloviny?',
-        validate: (v) => {
-            const n = norm(v);
-            return (
-                n.includes('jedna tretina z jedne poloviny') ||
-                n.includes('tretina z poloviny') ||
-                n.includes('1/3 z 1/2') ||
-                n.includes('1/6') ||
-                n.includes('stejne')
-            );
-        },
-    },
-    {
-        q: 'Je těžší kilo železa nebo 2 kila peří ?',
-        validate: (v) => {
-            const n = norm(v);
-            return n.includes('2') || n.includes('dve') || n.includes('peri');
-        },
-    },
-    {
-        q: 'Půl chleba stojí 25 Kč, kolik stojí dva takové chleby?',
-        validate: (v) => asNumber(v) === 100,
-    },
-    {
-        q: 'Jaké je nejmenší prvočíslo?',
-        validate: (v) => asNumber(v) === 2,
-    },
-    {
-        q: 'Jak se pozná, že je celé číslo dělitelné třemi?',
-        validate: (v) => {
-            const n = norm(v);
-            return (
-                n.includes('soucet') && n.includes('cif') && (n.includes('deliteln') || n.includes('del'))
-            );
-        },
-    },
-    {
-        q: 'Kolik nohou má osm pavouků?',
-        validate: (v) => asNumber(v) === 64,
-    },
-    {
-        q: 'Je vyšší nejvyšší hora Moravy nebo nejvyšší hora Čech?',
-        validate: (v) => {
-            const n = norm(v);
-            // Nejvyšší hora Čech (Sněžka 1603 m) > Nejvyšší hora Moravy (Praděd 1491 m)
-            return n.includes('cech') || n.includes('snezka');
-        },
-    },
-    {
-        q: 'V místnosti stojí stůl a dvě židle. Na posteli leží dvě kočky, na stole jsou 3 živé slepice a 2 kohouti. Kolik nohou je v místnosti?',
-        // Akceptuj několik běžných výkladů: 12 (jen nábytek), 22 (nábytek + drůbež), 30 (nábytek + drůbež + kočky)
-        validate: (v) => [12, 22, 30].includes(asNumber(v)),
-    },
-    {
-        q: 'Kolik je a^0?',
-        validate: (v) => {
-            const n = norm(v);
-            return asNumber(n.replace(',', '.')) === 1 || n === '1';
-        },
-    },
+const escapeStatements = [
+    { s: 'Jedna čtvrtina z jedné čtvrtiny je 1/16.', a: true },
+    { s: 'Jedna polovina z jedné třetiny je více než jedna třetina z jedné poloviny.', a: false },
+    { s: 'Dvě kila peří jsou těžší než kilo železa.', a: true },
+    { s: 'Když půlka chleba stojí 25 Kč, dva takové chleby stojí 100 Kč.', a: true },
+    { s: 'Nejmenší prvočíslo je 1.', a: false },
+    { s: 'Číslo je dělitelné třemi, když je součet jeho cifer dělitelný třemi.', a: true },
+    { s: 'Osm pavouků má dohromady 32 nohou.', a: false },
+    { s: 'Nejvyšší hora Čech je vyšší než nejvyšší hora Moravy.', a: true },
+    { s: 'V místnosti je přesně 12 nohou (počítáme pouze nohy nábytku).', a: true },
+    { s: 'Pro libovolné nenulové a platí a^0 = 1.', a: true },
 ];
+
+// Keep original hints and final answer configuration
 
 const escapeHints = [
     'říká se, že mne znali již ve starověkém Řecku',
@@ -95,11 +42,10 @@ const FINAL_ANSWER = ['vídeňský řízek', 'vidensky rizek', 'wiener schnitzel
 let idx = 0;
 let revealedHints = 0;
 
+// Cache DOM
 const qTotalEl = document.getElementById('q-total');
 const qNumberEl = document.getElementById('q-number');
 const questionTextEl = document.getElementById('question-text');
-const answerForm = document.getElementById('answer-form');
-const answerInput = document.getElementById('answer-input');
 const feedbackEl = document.getElementById('feedback');
 const hintsList = document.getElementById('hints-list');
 const skipBtn = document.getElementById('skip-btn');
@@ -107,27 +53,14 @@ const resetEscapeBtn = document.getElementById('reset-escape');
 const finalForm = document.getElementById('final-form');
 const finalInput = document.getElementById('final-input');
 const finalFeedback = document.getElementById('final-feedback');
-
-function norm(s) {
-    return String(s || '')
-        .toLowerCase()
-        .normalize('NFD')
-        .replace(/[\u0300-\u036f]/g, '')
-        .trim();
-}
-function asNumber(s) {
-    if (s == null) return NaN;
-    const t = String(s).replace(/,/g, '.').match(/-?\d+(?:\.\d+)?/);
-    return t ? Number(t[0]) : NaN;
-}
+const btnTrue = document.getElementById('btn-true');
+const btnFalse = document.getElementById('btn-false');
 
 function renderQuestion() {
-    qTotalEl.textContent = escapeQuestions.length;
-    qNumberEl.textContent = Math.min(idx + 1, escapeQuestions.length);
-    questionTextEl.textContent = escapeQuestions[idx].q;
-    answerInput.value = '';
+    qTotalEl.textContent = escapeStatements.length;
+    qNumberEl.textContent = Math.min(idx + 1, escapeStatements.length);
+    questionTextEl.textContent = escapeStatements[idx].s;
     feedbackEl.textContent = '';
-    answerInput.focus();
 }
 
 function renderHints() {
@@ -140,10 +73,8 @@ function renderHints() {
     });
 }
 
-answerForm.addEventListener('submit', (e) => {
-    e.preventDefault();
-    const val = answerInput.value;
-    const ok = escapeQuestions[idx].validate(val);
+function handleTFAnswer(userAnswer) {
+    const ok = escapeStatements[idx].a === userAnswer;
     if (ok) {
         feedbackEl.textContent = 'Správně! Získáváš nápovědu.';
         feedbackEl.className = 'feedback ok';
@@ -151,17 +82,19 @@ answerForm.addEventListener('submit', (e) => {
             revealedHints++;
             renderHints();
         }
-        // Postup na další otázku (cirkulárně)
-        idx = (idx + 1) % escapeQuestions.length;
+        idx = (idx + 1) % escapeStatements.length;
         renderQuestion();
     } else {
-        feedbackEl.textContent = 'Zkus to ještě jednou.';
+        feedbackEl.textContent = 'Ne, zkus to znovu.';
         feedbackEl.className = 'feedback err';
     }
-});
+}
+
+btnTrue.addEventListener('click', () => handleTFAnswer(true));
+btnFalse.addEventListener('click', () => handleTFAnswer(false));
 
 skipBtn.addEventListener('click', () => {
-    idx = (idx + 1) % escapeQuestions.length;
+    idx = (idx + 1) % escapeStatements.length;
     renderQuestion();
 });
 
@@ -191,16 +124,20 @@ finalForm.addEventListener('submit', (e) => {
 renderQuestion();
 renderHints();
 
-// Keyboard helpers
+// Keyboard helpers (N = next; T/F answer)
 document.addEventListener('keydown', (e) => {
+    const activeEscape = document.getElementById('escape').classList.contains('active');
     if (e.key.toLowerCase() === 'n') {
-        // next
-        if (document.getElementById('escape').classList.contains('active')) {
-            idx = (idx + 1) % escapeQuestions.length;
+        if (activeEscape) {
+            idx = (idx + 1) % escapeStatements.length;
             renderQuestion();
         } else if (document.getElementById('duel').classList.contains('active')) {
             newProblem();
         }
+    }
+    if (activeEscape) {
+        if (e.key.toLowerCase() === 't') handleTFAnswer(true);
+        if (e.key.toLowerCase() === 'f') handleTFAnswer(false);
     }
 });
 
