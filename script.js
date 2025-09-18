@@ -27,7 +27,7 @@ const escapeItems = [
     // 1) open text: 1/16
     {
         type: 'text',
-        q: 'Kolik je jedna čtvrtina z jedné čtvrtiny?',
+        q: 'Kolik je jedna čtvrtina z jedné čtvrtiny? Odpověď zapište jako zlomek (např. 3/4 nebo 3:4) nebo desetinné číslo (např. 0.527)',
         validate: (val) => {
             const n = norm(val);
             if (n === '1/16' || n === '1:16' || n === '1 : 16') return true;
@@ -86,7 +86,7 @@ const escapeItems = [
     // 10) text: a^0
     {
         type: 'text',
-        q: 'Kolik je a^0?',
+        q: 'Kolik je jakékoli číslo umocněné na 0?',
         validate: (val) => asNumber(String(val).replace(',', '.')) === 1,
     },
 ];
@@ -101,7 +101,7 @@ const escapeHints = [
     'v srpnu 1848 mne osobně poznal maršál rakouské armády Jan Josef Václav Radecký z Radče',
     's tímto pánem jsem se dostal až do Vídně',
     'zde jsem se stal oblíbencem císaře Františka Josefa II.',
-    'na císřském dvoře mne začali oblékat do mouky, strouhanky a vejce',
+    'na císařském dvoře mne začali oblékat do mouky, strouhanky a vejce',
     'nejraději kamarádím s bramborovým salátem',
     'jsem velmi oblíbený. Už víš, kdo jsem?',
 ];
