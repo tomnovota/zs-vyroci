@@ -44,7 +44,7 @@ const escapeItems = [
     // 3) compare: 2 kg feathers vs 1 kg iron -> greater
     {
         type: 'compare',
-        q: 'Porovnejte: 2 kg peří vs 1 kg železa',
+        q: 'Porovnejte váhu: 2 kg peří _ 1 kg železa',
         answer: 'gt',
     },
     // 4) text: cost of 2 breads
